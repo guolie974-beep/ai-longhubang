@@ -1,4 +1,6 @@
-# wxcloudrun-express
+# AI 龙虎榜云托管服务
+
+`POST /api/daily-analysis` 会立即创建分析任务；小程序随后轮询 `GET /api/daily-analysis/:taskId`，规避微信云托管单次调用的 15 秒限制。
 
 [![GitHub license](https://img.shields.io/github/license/WeixinCloud/wxcloudrun-express)](https://github.com/WeixinCloud/wxcloudrun-express)
 ![GitHub package.json dependency version (prod)](https://img.shields.io/github/package-json/dependency-version/WeixinCloud/wxcloudrun-express/express)
