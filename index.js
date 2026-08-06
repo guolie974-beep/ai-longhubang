@@ -53,7 +53,14 @@ app.get('/health', (_, res) => res.json({ ok: true }))
 
 async function generateAnalysis(stocks) {
   const prompt = `你是A股复盘助手。根据以下当日结构化数据，生成审慎、简洁的中文复盘。不得承诺收益、不得给出买卖指令，必须强调风险。只输出 JSON，不要 markdown。JSON 格式：{"overview":"不超过180字","highlights":["不超过3条"],"risks":["不超过3条"],"watchlist":["不超过3条"]}。数据：${JSON.stringify(stocks)}`
-  const response = await requestOpenAI({ model: process.env.OPENAI_MODEL || 'gpt-5', input: [{ role: 'user', content: [{ type: 'input_text', text: prompt }] }], max_output_tokens: 700, store: false })
+    const response = await requestOpenAI({
+      model: process.env.OPENAI_MODEL || 'gpt-5-mini',
+      input: [{ role: 'user', content: [{ type: 'input_text', text: prompt }] }],
+      reasoning: { effort: 'minimal' },
+      text: { verbosity: 'low' },
+      max_output_tokens: 500,
+      store: false
+    })
   const parsed = JSON.parse(String(response.output_text || '').replace(/^```json\s*|\s*```$/g, ''))
   return {
     date: today(), source: 'AI 基于已入库数据生成', overview: String(parsed.overview || '暂无概览'),
